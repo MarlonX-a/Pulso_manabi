@@ -1,0 +1,4 @@
+node_modules/
+dist/
+data/dataset.json
+.DS_Store

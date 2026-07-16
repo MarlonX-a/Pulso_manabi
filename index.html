@@ -1,0 +1,411 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#05070f" />
+  <title>Pulso Manabí — Catastro Tributario SRI 2022–2026</title>
+  <meta name="description" content="Storytelling de datos interactivo sobre el comportamiento tributario de los contribuyentes de Manabí (2022–2026), a partir del Catastro Tributario del SRI." />
+  <meta property="og:title" content="Pulso Manabí" />
+  <meta property="og:description" content="Del catastro tributario del SRI a una narrativa interactiva sobre el territorio, los sectores y la evolución tributaria de Manabí." />
+  <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="/assets/css/styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#hallazgo5">Saltar al explorador interactivo</a>
+
+  <div class="loading-screen" id="loading-screen" aria-hidden="false">
+    <div class="loading-orbit"><span></span><span></span><span></span></div>
+    <h1>Pulso<br />Manabí</h1>
+    <p>Preparando el catastro tributario…</p>
+  </div>
+
+  <div class="story-shell" id="story-shell" style="--chapter-progress:0">
+    <div class="backdrop" aria-hidden="true">
+      <div class="bg-layer bg-a"></div>
+      <div class="bg-layer bg-b"></div>
+      <div class="grid-overlay"></div>
+    </div>
+
+    <header class="topbar">
+      <button class="wordmark" type="button" data-goto="0" aria-label="Ir a la portada">
+        <span>PM</span>
+        <b>Pulso Manabí</b>
+      </button>
+      <p class="topbar-meta"><span class="live-dot"></span>Catastro Tributario SRI · 2022–2026</p>
+      <button class="icon-button" id="open-methodology" type="button" aria-label="Ver metodología y fuentes" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 2-3 4"/><path d="M12 17h.01"/></svg>
+      </button>
+    </header>
+
+    <main class="track" id="track">
+
+      <!-- 01 · PORTADA -->
+      <section class="panel hero-panel" id="portada" data-index="0" data-accent="#2f80ed" aria-label="Portada">
+        <span class="panel-watermark" aria-hidden="true">01</span>
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow" data-animate="fade-up">Trabajo Autónomo N.º 2 · IS-604 Visualización de Datos</p>
+            <h1 class="hero-title" data-animate="mask-reveal">
+              <span class="mask-line"><span>PULSO</span></span>
+              <span class="mask-line"><span>MANABÍ</span></span>
+            </h1>
+            <p class="hero-deck" data-animate="fade-up">
+              El Catastro Tributario del Servicio de Rentas Internas convertido en una narrativa interactiva
+              sobre territorio, sectores económicos y la evolución tributaria de Manabí entre
+              <strong>enero de 2022</strong> y <strong>junio de 2026</strong>.
+            </p>
+            <div class="hero-actions" data-animate="fade-up">
+              <button class="primary-button" type="button" data-goto="1">
+                Comenzar la historia
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+              </button>
+              <span>Usa <kbd>←</kbd> <kbd>→</kbd> o haz clic en los bordes para navegar</span>
+            </div>
+            <p class="hero-credits" data-animate="fade-up">
+              Ingeniería de Software · ULEAM · Grupo: Alvia Mero · Delgado Párraga · Cedeño Soledispa<br />
+              Herramientas: D3.js · GSAP · Vite
+            </p>
+          </div>
+          <div class="data-collage" data-animate="fade-up" aria-hidden="false">
+            <div class="collage-card card-main">
+              <small>Contribuyentes activos · jun 2026</small>
+              <strong data-counter="244515" data-format="int">0</strong>
+            </div>
+            <div class="collage-card card-period">
+              <small>Periodo analizado</small>
+              <strong>2022–2026</strong>
+            </div>
+            <div class="collage-card card-cantons">
+              <small>Cantones</small>
+              <strong data-counter="22" data-format="int">0</strong>
+            </div>
+            <div class="collage-card card-sectors">
+              <small>Sectores económicos</small>
+              <strong data-counter="25" data-format="int">0</strong>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 02 · CONTEXTO -->
+      <section class="panel" id="contexto" data-index="1" data-accent="#6c63ff" aria-label="Introducción y contexto">
+        <span class="panel-watermark" aria-hidden="true">02</span>
+        <div class="context-layout">
+          <div class="context-question section-intro">
+            <span class="section-number">02</span>
+            <p class="eyebrow" data-animate="fade-up">Introducción y contexto</p>
+            <h2 data-animate="fade-up">La pregunta que <em>guía</em> el análisis</h2>
+            <blockquote data-animate="fade-up">
+              «¿Cómo ha evolucionado el comportamiento tributario de los contribuyentes registrados en la
+              provincia de Manabí durante el período 2022–2026 y cuáles son las principales características
+              de dicha evolución?»
+            </blockquote>
+          </div>
+          <div class="context-grid" data-animate="fade-up" data-stagger="0.08">
+            <article>
+              <span>17→6</span>
+              <div>
+                <h3>Datos abiertos del SRI</h3>
+                <p>Diecisiete archivos oficiales del Catastro Tributario se consolidaron en seis conjuntos
+                  limpios: contribuyentes activos, inscripciones y cierres, con sus dimensiones de fecha,
+                  ubicación y actividad económica.</p>
+              </div>
+            </article>
+            <article>
+              <span>102</span>
+              <div>
+                <h3>Un territorio con matices</h3>
+                <p>Manabí agrupa 22 cantones y 102 parroquias. El comportamiento tributario no es uniforme:
+                  entender dónde se concentra la actividad económica ayuda a leer el desarrollo territorial.</p>
+              </div>
+            </article>
+            <article>
+              <span>54</span>
+              <div>
+                <h3>Por qué importa ahora</h3>
+                <p>Con 54 meses de historia entre enero de 2022 y junio de 2026, es posible identificar si el
+                  tejido empresarial de la provincia crece, se contrae o cambia de composición.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 03 · OBJETIVOS -->
+      <section class="panel" id="objetivos" data-index="2" data-accent="#f2c94c" aria-label="Objetivos del análisis">
+        <span class="panel-watermark" aria-hidden="true">03</span>
+        <div class="objectives-layout">
+          <div class="objectives-heading section-intro">
+            <span class="section-number">03</span>
+            <p class="eyebrow" data-animate="fade-up">Objetivos del análisis</p>
+            <h2 data-animate="fade-up">Cuatro preguntas <em>medibles</em></h2>
+            <p data-animate="fade-up">Cada objetivo se responde con un hallazgo y un gráfico propio a lo largo
+              de este recorrido.</p>
+          </div>
+          <div class="objective-list" data-animate="fade-up" data-stagger="0.08">
+            <article><span>01</span><div><h3>Evolución de inscripciones</h3><p>Analizar la evolución anual de las inscripciones de nuevos contribuyentes en Manabí (2022–2026).</p></div></article>
+            <article><span>02</span><div><h3>Comportamiento de cierres</h3><p>Identificar el comportamiento de los cierres de actividades económicas registrados en el período.</p></div></article>
+            <article><span>03</span><div><h3>Distribución territorial</h3><p>Examinar la distribución de contribuyentes activos por cantón y parroquia para ubicar la mayor concentración tributaria.</p></div></article>
+            <article><span>04</span><div><h3>Actividades predominantes</h3><p>Determinar las actividades económicas con mayor representación dentro del catastro tributario.</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 04 · HALLAZGO 1 — SUNBURST -->
+      <section class="panel split-panel" id="hallazgo1" data-index="3" data-accent="#6c63ff" aria-label="Hallazgo 1: distribución territorial">
+        <span class="panel-watermark" aria-hidden="true">04</span>
+        <div class="split-layout territory-layout">
+          <div class="section-intro">
+            <span class="section-number">04</span>
+            <p class="eyebrow" data-animate="fade-up">Hallazgo 1 · Territorio</p>
+            <h2 data-animate="fade-up">Un territorio <em>desigual</em></h2>
+            <p class="section-copy" data-animate="fade-up">
+              La actividad económica activa no se reparte por igual entre los 22 cantones de Manabí: un
+              grupo reducido de cabeceras cantonales concentra la mayor parte de los contribuyentes activos,
+              mientras otros cantones aportan una fracción mínima del total provincial.
+            </p>
+            <p class="chart-source" data-animate="fade-up">Fuente: Fact_Activos · corte junio 2026 · 102 parroquias</p>
+          </div>
+          <div class="visual-panel territory-panel" data-animate="fade-up">
+            <div class="sunburst-wrap" id="chart-sunburst" data-chart-slot="hallazgo1_sunburst" role="img" aria-label="Sunburst de contribuyentes activos por cantón y parroquia"></div>
+            <aside class="territory-rank" id="territory-rank" aria-label="Ranking de cantones"></aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- 05 · HALLAZGO 2 — TREEMAP -->
+      <section class="panel split-panel" id="hallazgo2" data-index="4" data-accent="#f2c94c" aria-label="Hallazgo 2: predominio de actividades económicas">
+        <span class="panel-watermark" aria-hidden="true">05</span>
+        <div class="split-layout fabric-layout">
+          <div class="section-intro">
+            <span class="section-number">05</span>
+            <p class="eyebrow" data-animate="fade-up">Hallazgo 2 · Actividades</p>
+            <h2 data-animate="fade-up">El tejido <em>productivo</em></h2>
+            <p class="section-copy" data-animate="fade-up">
+              El comercio y los servicios concentran la mayor cantidad de contribuyentes activos e
+              inscripciones del período, frente a sectores como minería o energía, con una presencia mucho
+              más marginal en el catastro provincial.
+            </p>
+            <p class="chart-source" data-animate="fade-up">Fuente: activeCube · 25 sectores CIIU · filtra por periodo y tipo</p>
+          </div>
+          <div class="visual-panel fabric-panel" data-animate="fade-up">
+            <div class="fabric-toolbar">
+              <label class="field-label" for="fabric-period">Periodo
+                <select id="fabric-period" aria-label="Seleccionar periodo"></select>
+              </label>
+              <div class="segmented" id="fabric-type-toggle" role="group" aria-label="Filtrar por tipo de contribuyente">
+                <button type="button" data-type="all" class="active">Todos</button>
+                <button type="button" data-type="PERSONAS NATURALES">Naturales</button>
+                <button type="button" data-type="SOCIEDADES">Sociedades</button>
+              </div>
+            </div>
+            <div class="tree-wrap" id="chart-treemap" data-chart-slot="hallazgo2_treemap" role="img" aria-label="Treemap de contribuyentes activos por sector económico"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 06 · HALLAZGO 3 — WATERFALL -->
+      <section class="panel split-panel" id="hallazgo3" data-index="5" data-accent="#eb5757" aria-label="Hallazgo 3: evolución del comportamiento tributario">
+        <span class="panel-watermark" aria-hidden="true">06</span>
+        <div class="split-layout evolution-layout">
+          <div class="section-intro">
+            <span class="section-number">06</span>
+            <p class="eyebrow" data-animate="fade-up">Hallazgo 3 · Evolución</p>
+            <h2 data-animate="fade-up">El pulso se <em>enfría</em></h2>
+            <p class="section-copy" data-animate="fade-up">
+              Los contribuyentes activos crecieron de 173.313 a 244.515 entre 2022 y 2026, pero en el primer
+              semestre de 2026 los cierres (15.169) superaron a las inscripciones (12.691): un balance neto
+              de −2.478 que interrumpe la tendencia de crecimiento sostenido.
+            </p>
+            <div class="finding-kpis" data-animate="fade-up">
+              <div><small>Inscripciones H1-2026</small><b data-counter="12691" data-format="int" data-color="registration">0</b></div>
+              <div><small>Cierres H1-2026</small><b data-counter="15169" data-format="int" data-color="closure">0</b></div>
+              <div><small>Balance neto</small><b data-counter="-2478" data-format="signed" data-color="balance">0</b></div>
+            </div>
+          </div>
+          <div class="visual-panel evolution-panel" data-animate="fade-up">
+            <div class="waterfall-toolbar" id="waterfall-years" role="group" aria-label="Seleccionar año"></div>
+            <div class="waterfall-module" id="chart-waterfall" data-chart-slot="hallazgo3_waterfall" role="img" aria-label="Cascada mensual de balance entre inscripciones y cierres"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 07 · HALLAZGO 4 — SANKEY -->
+      <section class="panel split-panel" id="hallazgo4" data-index="6" data-accent="#56ccf2" aria-label="Hallazgo 4: integración y calidad de los datos">
+        <span class="panel-watermark" aria-hidden="true">07</span>
+        <div class="split-layout quality-layout">
+          <div class="section-intro">
+            <span class="section-number">07</span>
+            <p class="eyebrow" data-animate="fade-up">Hallazgo 4 · Calidad de datos</p>
+            <h2 data-animate="fade-up">De 17 archivos a <em>una historia</em></h2>
+            <p class="section-copy" data-animate="fade-up">
+              Consolidar diecisiete archivos anuales del SRI en un modelo de seis tablas relacionadas
+              permitió construir un dataset compacto y validado, con solo dos vacíos documentados
+              (noviembre de 2024 y diciembre de 2025) en 54 meses de cobertura.
+            </p>
+            <div class="quality-facts" data-animate="fade-up">
+              <span>162.229 filas de activos</span>
+              <span>936 filas de inscripciones</span>
+              <span>1.070 filas de cierres</span>
+            </div>
+          </div>
+          <div class="visual-panel quality-panel" data-animate="fade-up">
+            <div class="sankey-module" id="chart-sankey" data-chart-slot="hallazgo4_sankey" role="img" aria-label="Diagrama de flujo del pipeline de datos"></div>
+            <div class="coverage-matrix" id="coverage-matrix" aria-label="Matriz de cobertura mensual"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 08 · HALLAZGO 5 — ATLAS -->
+      <section class="panel atlas-panel" id="hallazgo5" data-index="7" data-accent="#21d4c2" aria-label="Hallazgo 5: explorador interactivo">
+        <span class="panel-watermark" aria-hidden="true">08</span>
+        <div class="atlas-wrap">
+          <div class="atlas-heading">
+            <span class="section-number">08</span>
+            <div>
+              <p class="eyebrow" data-animate="fade-up">Hallazgo 5 · El explorador</p>
+              <h2 data-animate="fade-up">El <em>Atlas</em> vivo de Manabí</h2>
+            </div>
+            <p data-animate="fade-up">Filtra por periodo, cantón, sector y tipo de contribuyente. Cada
+              cambio recalcula en vivo el total, el ranking territorial, el ranking sectorial y la
+              tendencia de 54 meses.</p>
+          </div>
+
+          <div class="atlas-console" id="chart-atlas" data-chart-slot="hallazgo5_atlas" aria-label="Panel interactivo de exploración de datos">
+            <div class="atlas-toolbar" id="atlas-toolbar">
+              <div class="mode-switch segmented" role="group" aria-label="Modo de análisis">
+                <button type="button" data-mode="explore" class="active">Explorar</button>
+                <button type="button" data-mode="compare">Comparar</button>
+              </div>
+              <div class="period-scrubber">
+                <button type="button" id="atlas-play" aria-label="Reproducir la evolución mensual" aria-pressed="false"></button>
+                <input type="range" id="atlas-period" min="0" max="53" value="53" aria-label="Periodo" />
+                <output id="atlas-period-label" for="atlas-period"></output>
+              </div>
+              <div class="filter-popover" data-filter="canton"><button type="button">Cantón</button></div>
+              <div class="filter-popover" data-filter="sector"><button type="button">Sector</button></div>
+              <div class="filter-popover" data-filter="type"><button type="button">Tipo</button></div>
+              <button class="reset-button" id="atlas-reset" type="button">Reiniciar</button>
+            </div>
+            <div class="filter-chips" id="atlas-chips" aria-live="polite"></div>
+
+            <div class="atlas-grid">
+              <div class="atlas-card atlas-kpi" id="atlas-kpi"></div>
+              <div class="atlas-card atlas-trend" id="atlas-trend"></div>
+              <div class="atlas-card rank-card" id="atlas-cantons"></div>
+              <div class="atlas-card rank-card" id="atlas-sectors"></div>
+              <div class="atlas-card narrative-card" id="atlas-narrative"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 09 · CONCLUSIONES -->
+      <section class="panel" id="conclusiones" data-index="8" data-accent="#f2c94c" aria-label="Conclusiones">
+        <span class="panel-watermark" aria-hidden="true">09</span>
+        <div class="closing-wrap">
+          <div class="closing-title">
+            <span class="section-number">09</span>
+            <p class="eyebrow" data-animate="fade-up">Conclusiones</p>
+            <h2 data-animate="fade-up">La respuesta a la pregunta</h2>
+            <p class="section-copy" data-animate="fade-up">
+              El comportamiento tributario de Manabí (2022–2026) muestra crecimiento sostenido en
+              contribuyentes activos, una fuerte concentración territorial y sectorial, y una desaceleración
+              reciente donde los cierres superan a las inscripciones.
+            </p>
+          </div>
+          <div class="conclusion-grid" data-animate="fade-up" data-stagger="0.07">
+            <button type="button" data-goto="3"><span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><strong>Territorio</strong><p>Manta y Portoviejo concentran la mayor parte de los contribuyentes activos de la provincia.</p></button>
+            <button type="button" data-goto="4"><span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><strong>Sectores</strong><p>Comercio y servicios predominan sobre el resto de las 25 actividades del catastro.</p></button>
+            <button type="button" data-goto="5"><span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><strong>Evolución</strong><p>El crecimiento 2022–2026 se desacelera: H1-2026 cierra con balance neto negativo.</p></button>
+            <button type="button" data-goto="6"><span><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span><strong>Calidad</strong><p>El modelo de datos consolidado permite un análisis confiable pese a los vacíos documentados.</p></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- 10 · RECOMENDACIONES -->
+      <section class="panel" id="recomendaciones" data-index="9" data-accent="#eb5757" aria-label="Recomendaciones y mejoras futuras">
+        <span class="panel-watermark" aria-hidden="true">10</span>
+        <div class="recommendation-layout">
+          <div class="recommendation-heading section-intro">
+            <span class="section-number">10</span>
+            <p class="eyebrow" data-animate="fade-up">Recomendaciones y mejoras futuras</p>
+            <h2 data-animate="fade-up">Qué haríamos <em>distinto</em></h2>
+            <p data-animate="fade-up">Con más tiempo o más datos, estas son las líneas de trabajo que
+              fortalecerían el análisis.</p>
+          </div>
+          <div class="recommendation-list" data-animate="fade-up" data-stagger="0.07">
+            <article><span>01</span><div><h3>Actualización periódica</h3><p>Incorporar las nuevas publicaciones del SRI para mantener el dashboard vigente.</p></div></article>
+            <article><span>02</span><div><h3>Ampliar el alcance geográfico</h3><p>Integrar otras provincias para permitir comparaciones regionales.</p></div></article>
+            <article><span>03</span><div><h3>Nuevas variables</h3><p>Sumar información económica, demográfica o financiera al modelo de datos.</p></div></article>
+            <article><span>04</span><div><h3>Optimizar la experiencia</h3><p>Ampliar la interacción del explorador con nuevos filtros y vistas.</p></div></article>
+            <article><span>05</span><div><h3>Publicación continua</h3><p>Automatizar la actualización de datos y publicar el sitio con acceso público.</p></div></article>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11 · CRÉDITOS -->
+      <section class="panel" id="creditos" data-index="10" data-accent="#21d4c2" aria-label="Créditos">
+        <span class="panel-watermark" aria-hidden="true">11</span>
+        <div class="credits-layout">
+          <div class="credits-title section-intro">
+            <span class="section-number">11</span>
+            <p class="eyebrow" data-animate="fade-up">Créditos</p>
+            <h2 data-animate="fade-up">Pulso <em>Manabí</em></h2>
+            <p data-animate="fade-up">Trabajo Autónomo N.º 2 · IS-604 Visualización de Datos · ULEAM · Período 2026-1</p>
+          </div>
+          <div class="credits-card" data-animate="fade-up">
+            <div><small>Carrera</small><strong>Ingeniería de Software · Facultad de Ciencias de la Vida y Tecnologías</strong></div>
+            <div><small>Docente</small><strong>Legarda Albiño Anthony Christopher, Mgs.</strong></div>
+            <div><small>Integrantes</small><p>Alvia Mero Anderson Marlon<br />Delgado Párraga Rolando Jair<br />Cedeño Soledispa Derek Josue</p></div>
+            <div><small>Herramientas</small><p>HTML · CSS · JavaScript (ES modules) · Vite · D3.js · d3-sankey · GSAP</p></div>
+            <div><small>Fuente de datos</small><p>Servicio de Rentas Internas (SRI) · Catastro Tributario · Datos Abiertos</p></div>
+            <button class="ghost-button" type="button" data-goto="0">Volver al inicio</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <button class="edge-zone edge-left" id="edge-left" type="button" aria-label="Sección anterior">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <button class="edge-zone edge-right" id="edge-right" type="button" aria-label="Sección siguiente">
+      <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+
+    <nav class="chapter-nav" aria-label="Progreso de la narrativa">
+      <button class="nav-arrow" id="nav-prev" type="button" aria-label="Sección anterior">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="progress-rail" id="progress-rail" role="tablist" aria-label="Secciones"></div>
+      <button class="nav-arrow" id="nav-next" type="button" aria-label="Sección siguiente">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </nav>
+    <p class="chapter-name" id="chapter-name" aria-hidden="true"></p>
+  </div>
+
+  <div class="method-backdrop" id="method-backdrop" hidden>
+    <div class="method-drawer" role="dialog" aria-modal="true" aria-labelledby="method-title">
+      <button class="drawer-close" id="method-close" type="button" aria-label="Cerrar metodología">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+      <h2 id="method-title">Metodología</h2>
+      <div class="method-block"><span>01</span><div><h3>Fuente</h3><p>Servicio de Rentas Internas (SRI), portal de Datos Abiertos, Catastro Tributario de Manabí.</p></div></div>
+      <div class="method-block"><span>02</span><div><h3>Preparación</h3><p>17 archivos originales se consolidaron en 6 CSV (3 dimensiones + 3 hechos), validados y compactados en un único dataset.json.</p></div></div>
+      <div class="method-block"><span>03</span><div><h3>Cobertura</h3><p>54 meses, enero 2022 – junio 2026. Vacíos documentados: noviembre 2024 y diciembre 2025.</p></div></div>
+      <div class="source-list">
+        <h3>Archivos fuente</h3>
+        <p><span>Fact_Activos.csv</span><b>162.229 filas</b></p>
+        <p><span>Fact_Inscripciones.csv</span><b>936 filas</b></p>
+        <p><span>Fact_Cierres.csv</span><b>1.070 filas</b></p>
+        <p><span>Dim_Actividad / Dim_Ubicacion / Dim_Fecha</span><b>3 dimensiones</b></p>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="/assets/js/main.js"></script>
+</body>
+</html>

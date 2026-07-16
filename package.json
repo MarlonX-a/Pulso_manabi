@@ -1,0 +1,30 @@
+{
+  "name": "pulso-manabi-v3",
+  "version": "3.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "prepare-data": "node scripts/prepare-data.mjs",
+    "predev": "npm run prepare-data",
+    "dev": "vite --host 0.0.0.0",
+    "prebuild": "npm run prepare-data",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "start": "npm run preview"
+  },
+  "dependencies": {
+    "@fontsource/archivo-black": "^5.2.8",
+    "@fontsource/manrope": "^5.2.8",
+    "d3": "^7.9.0",
+    "d3-sankey": "^0.12.3",
+    "gsap": "^3.15.0",
+    "lucide-static": "^1.24.0"
+  },
+  "devDependencies": {
+    "csv-parse": "^7.0.1",
+    "vite": "^6.0.0"
+  },
+  "type": "module"
+}
