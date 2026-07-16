@@ -275,17 +275,10 @@
           <div class="atlas-console" id="chart-atlas" data-chart-slot="hallazgo5_atlas" aria-label="Panel interactivo de exploración de datos">
             <div class="atlas-toolbar" id="atlas-toolbar">
               <div class="mode-switch segmented" role="group" aria-label="Modo de análisis">
-                <button type="button" data-mode="explore" class="active">Explorar</button>
-                <button type="button" data-mode="compare">Comparar</button>
+                <button type="button" data-mode="explore" class="active" aria-pressed="true">Explorar</button>
+                <button type="button" data-mode="compare" aria-pressed="false">Comparar</button>
               </div>
-              <div class="period-scrubber">
-                <button type="button" id="atlas-play" aria-label="Reproducir la evolución mensual" aria-pressed="false"></button>
-                <input type="range" id="atlas-period" min="0" max="53" value="53" aria-label="Periodo" />
-                <output id="atlas-period-label" for="atlas-period"></output>
-              </div>
-              <div class="filter-popover" data-filter="canton"><button type="button">Cantón</button></div>
-              <div class="filter-popover" data-filter="sector"><button type="button">Sector</button></div>
-              <div class="filter-popover" data-filter="type"><button type="button">Tipo</button></div>
+              <div class="atlas-control-area" id="atlas-control-area"></div>
               <button class="reset-button" id="atlas-reset" type="button">Reiniciar</button>
             </div>
             <div class="filter-chips" id="atlas-chips" aria-live="polite"></div>
@@ -379,7 +372,7 @@
       <button class="nav-arrow" id="nav-prev" type="button" aria-label="Sección anterior">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
       </button>
-      <div class="progress-rail" id="progress-rail" role="tablist" aria-label="Secciones"></div>
+      <div class="progress-rail" id="progress-rail" aria-label="Secciones"></div>
       <button class="nav-arrow" id="nav-next" type="button" aria-label="Sección siguiente">
         <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
       </button>

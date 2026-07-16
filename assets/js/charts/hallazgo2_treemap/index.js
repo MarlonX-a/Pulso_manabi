@@ -12,6 +12,7 @@ export function createTreemapChart({ el, data, gsap }) {
   let typeToggle = null;
   let detailEl = null;
   let selectedSector = null;
+  let activeBlock = null;
 
   function rollupByPeriod(period, type) {
     const periodIdx = periods.indexOf(period);
@@ -29,13 +30,38 @@ export function createTreemapChart({ el, data, gsap }) {
     const map = rollupByPeriod(currentPeriod, currentType);
     const baseline = rollupByPeriod("2022-01", currentType);
     const total = d3.sum([...map.values()]);
-    return [...map.entries()]
+    const nodes = [...map.entries()]
       .map(([sectorIdx, value]) => ({
         sectorIdx, sector: sectors[sectorIdx], value,
         share: total ? (value / total) * 100 : 0,
         baseline: baseline.get(sectorIdx) ?? 0,
       }))
       .sort((a, b) => b.value - a.value);
+    return { nodes, total };
+  }
+
+  function groupNodes(nodes, total, visibleCount) {
+    const primary = nodes.slice(0, visibleCount);
+    const remainder = nodes.slice(visibleCount);
+    if (!remainder.length) return primary;
+    return [...primary, {
+      sectorIdx: "other",
+      sector: { id: "other", name: "Otros sectores" },
+      value: d3.sum(remainder, (node) => node.value),
+      baseline: d3.sum(remainder, (node) => node.baseline),
+      share: total ? (d3.sum(remainder, (node) => node.value) / total) * 100 : 0,
+      members: remainder,
+      isOther: true,
+    }];
+  }
+
+  function closeDetail({ restoreFocus = false } = {}) {
+    if (!detailEl) return;
+    detailEl.hidden = true;
+    selectedSector = null;
+    activeBlock?.setAttribute("aria-expanded", "false");
+    if (restoreFocus) activeBlock?.focus();
+    activeBlock = null;
   }
 
   function buildPeriodOptions() {
@@ -52,38 +78,63 @@ export function createTreemapChart({ el, data, gsap }) {
     periodSelect.innerHTML = html;
   }
 
-  function showDetail(node) {
+  function showDetail(node, block) {
+    activeBlock?.setAttribute("aria-expanded", "false");
+    activeBlock = block;
+    activeBlock.setAttribute("aria-expanded", "true");
     selectedSector = node.sectorIdx;
     const delta = node.baseline ? ((node.value / node.baseline - 1) * 100) : null;
+    const memberList = node.isOther
+      ? `<div class="fabric-other-list" data-scroll-ok="true" data-scroll-lock="true">${node.members.map((member) => {
+        const meta = sectorMeta(member.sector.id);
+        return `<span><b>${meta.short}</b><small>${formatInt(member.value)}</small></span>`;
+      }).join("")}</div>`
+      : "";
     detailEl.innerHTML = `
       <div>
         <b>${node.sector.name}</b><br/>
         <small>${formatInt(node.value)} activos · ${formatPercent(node.share)} del total ${delta != null ? `· ${delta >= 0 ? "+" : ""}${delta.toFixed(1)}% vs ene 2022` : ""}</small>
+        ${memberList}
       </div>
       <button type="button" id="fabric-detail-close">Cerrar</button>`;
     detailEl.hidden = false;
-    detailEl.querySelector("#fabric-detail-close").addEventListener("click", () => {
-      detailEl.hidden = true;
-      selectedSector = null;
-    });
+    detailEl.querySelector("#fabric-detail-close").addEventListener("click", () => closeDetail({ restoreFocus: true }));
   }
 
   function render(animate) {
-    const nodes = computeNodes();
+    closeDetail();
+    const { nodes: allNodes, total } = computeNodes();
     const rect = el.getBoundingClientRect();
     const width = Math.max(280, rect.width);
     const height = Math.max(240, rect.height);
 
-    const root = d3.hierarchy({ children: nodes }).sum((d) => d.value);
-    d3.treemap().size([width, height]).paddingInner(3).round(true)(root);
+    let visibleCount = Math.min(12, allNodes.length);
+    let root;
+    do {
+      const nodes = groupNodes(allNodes, total, visibleCount);
+      root = d3.hierarchy({ children: nodes })
+        .sum((d) => d.value)
+        .sort((a, b) => b.value - a.value);
+      d3.treemap()
+        .tile(d3.treemapSquarify.ratio(1))
+        .size([width, height])
+        .paddingInner(3)
+        .round(true)(root);
+      const hasCrampedCell = root.leaves().some((leaf) => (leaf.x1 - leaf.x0) < 106 || (leaf.y1 - leaf.y0) < 58);
+      if (!hasCrampedCell || visibleCount <= 5) break;
+      visibleCount -= 1;
+    } while (visibleCount >= 5);
 
     const blocks = el.querySelectorAll(".tree-block");
     blocks.forEach((b) => b.remove());
 
     root.leaves().forEach((leaf, i) => {
       const node = leaf.data;
-      const meta = sectorMeta(node.sector.id);
-      const block = document.createElement("div");
+      const meta = node.isOther
+        ? { icon: "", short: `Otros (${node.members.length})`, color: "#8793a8" }
+        : sectorMeta(node.sector.id);
+      const block = document.createElement("button");
+      block.type = "button";
       block.className = "tree-block";
       block.style.background = `linear-gradient(160deg, color-mix(in srgb, ${meta.color} 30%, #0d1120), color-mix(in srgb, ${meta.color} 12%, #0d1120))`;
       block.style.color = meta.color;
@@ -93,15 +144,14 @@ export function createTreemapChart({ el, data, gsap }) {
       block.style.height = `${Math.max(0, leaf.y1 - leaf.y0)}px`;
       const w = leaf.x1 - leaf.x0;
       const h = leaf.y1 - leaf.y0;
-      const showDetails = w > 70 && h > 46;
-      block.innerHTML = `
-        <b>${meta.icon}${meta.short}</b>
-        <strong>${formatInt(node.value)}</strong>
-        ${showDetails ? `<small>${formatPercent(node.share)} del total</small>` : ""}`;
-      block.addEventListener("click", () => showDetail(node));
-      block.addEventListener("mouseenter", (event) => {
-        block.title = `${node.sector.name} · ${formatInt(node.value)} activos`;
-      });
+      const showValue = w >= 108 && h >= 72;
+      const showShare = w >= 145 && h >= 108;
+      const showIcon = w >= 145;
+      block.innerHTML = `<b>${showIcon ? meta.icon : ""}<span>${meta.short}</span></b>${showValue ? `<strong>${formatInt(node.value)}</strong>` : ""}${showShare ? `<small>${formatPercent(node.share)} del total</small>` : ""}`;
+      block.title = `${node.sector.name} · ${formatInt(node.value)} activos · ${formatPercent(node.share)} del total`;
+      block.setAttribute("aria-label", block.title);
+      block.setAttribute("aria-expanded", "false");
+      block.addEventListener("click", () => showDetail(node, block));
       if (animate) {
         block.style.opacity = "0";
         block.style.transform = "scale(.85)";
@@ -127,11 +177,8 @@ export function createTreemapChart({ el, data, gsap }) {
     });
   }
 
-  let resizeTimer = null;
-  function onResize() {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => render(false), 180);
-  }
+  let resizeObserver = null;
+  let resizeRaf = null;
 
   return {
     id: "hallazgo2_treemap",
@@ -143,19 +190,30 @@ export function createTreemapChart({ el, data, gsap }) {
 
       detailEl = document.createElement("div");
       detailEl.className = "fabric-detail";
+      detailEl.setAttribute("role", "region");
+      detailEl.setAttribute("aria-label", "Detalle de la actividad seleccionada");
       detailEl.hidden = true;
       el.parentElement.appendChild(detailEl);
 
-      window.addEventListener("resize", onResize);
+      resizeObserver = new ResizeObserver(() => {
+        cancelAnimationFrame(resizeRaf);
+        resizeRaf = requestAnimationFrame(() => render(false));
+      });
+      resizeObserver.observe(el);
       render(false);
     },
     enter() {
       render(true);
     },
+    leave() {
+      closeDetail();
+      gsap.killTweensOf(el.querySelectorAll(".tree-block"));
+    },
     update() {},
     resize() { render(false); },
     destroy() {
-      window.removeEventListener("resize", onResize);
+      resizeObserver?.disconnect();
+      cancelAnimationFrame(resizeRaf);
       detailEl?.remove();
     },
   };

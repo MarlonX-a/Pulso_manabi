@@ -42,6 +42,13 @@ npm run build
 npm run preview
 ```
 
+Las comprobaciones automatizadas de navegación, filtros, capas y gráficos de escritorio se ejecutan con:
+
+```bash
+npm run test:e2e
+npm run check
+```
+
 ## Estructura
 
 ```
@@ -49,7 +56,7 @@ index.html                  ← página principal, scroll horizontal, copy de la
 assets/css/styles.css       ← tokens de diseño, layout, navegación, componentes
 assets/js/main.js           ← arranque, carga de datos, lógica de scroll y navegación
 assets/js/core/             ← store, motor de navegación, animación, formato, datos, sectores
-assets/js/sections/         ← una carpeta por sección narrativa (01-portada … 11-creditos)
+assets/js/sections/         ← hooks de entrada para secciones con contadores animados
 assets/js/charts/           ← una carpeta por gráfico avanzado (hallazgo1_sunburst … hallazgo5_atlas)
 data/raw/                   ← CSV originales del SRI
 data/dataset.json           ← dataset compacto generado (no editar a mano)
@@ -64,7 +71,7 @@ scripts/prepare-data.mjs    ← genera y valida data/dataset.json
 | Hallazgo 2 · Actividades | Treemap por sector | Dropdown de periodo (54 meses) + toggle por tipo de contribuyente |
 | Hallazgo 3 · Evolución | Cascada (waterfall) mensual | Botones de año 2022–2026, tooltip por mes |
 | Hallazgo 4 · Calidad | Diagrama de flujo (Sankey) | Hover resalta rutas del pipeline de datos |
-| Hallazgo 5 · Atlas vivo | Dashboard coordinado | Filtros de cantón/sector/tipo, scrubber de periodo, reproducción automática |
+| Hallazgo 5 · Atlas vivo | Dashboard coordinado | Filtros globales, reproducción y comparación A/B de dos segmentos completos |
 
 ## Herramientas y recursos
 

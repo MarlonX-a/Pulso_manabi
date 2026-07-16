@@ -1,6 +1,7 @@
 import * as d3 from "d3";
 import { sankey, sankeyLinkHorizontal } from "d3-sankey";
 import { formatInt } from "../../core/format.js";
+import { positionTooltip } from "../../core/overlay.js";
 
 const VIEW_W = 720;
 const VIEW_H = 300;
@@ -54,9 +55,7 @@ export function createSankeyChart({ el, data }) {
   function showTooltip(event, html) {
     const tip = ensureTooltip();
     tip.innerHTML = html;
-    tip.style.display = "block";
-    tip.style.left = `${event.clientX}px`;
-    tip.style.top = `${event.clientY}px`;
+    positionTooltip(tip, event);
   }
   function hideTooltip() { if (tooltip) tooltip.style.display = "none"; }
 
@@ -154,6 +153,7 @@ export function createSankeyChart({ el, data }) {
       render(false);
     },
     enter() { render(true); },
+    leave() { svg?.selectAll("*").interrupt(); },
     update() {},
     resize() {},
     destroy() { tooltip?.remove(); },

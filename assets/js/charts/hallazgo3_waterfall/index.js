@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { formatSigned, formatInt } from "../../core/format.js";
+import { positionTooltip } from "../../core/overlay.js";
 
 const VIEW_W = 760;
 const VIEW_H = 380;
@@ -62,9 +63,7 @@ export function createWaterfallChart({ el, data, gsap }) {
     } else {
       tip.innerHTML = `<strong>${bar.period}</strong><span>Inscripciones ${formatInt(bar.registrations)} · Cierres ${formatInt(bar.closures)}</span><span>Balance ${formatSigned(bar.value)}</span>`;
     }
-    tip.style.display = "block";
-    tip.style.left = `${event.clientX}px`;
-    tip.style.top = `${event.clientY}px`;
+    positionTooltip(tip, event);
   }
 
   function hideTooltip() {
@@ -162,6 +161,7 @@ export function createWaterfallChart({ el, data, gsap }) {
     enter() {
       render(true);
     },
+    leave() { svg?.selectAll("*").interrupt(); },
     update() {},
     resize() {},
     destroy() {

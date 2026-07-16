@@ -32,8 +32,12 @@ export function analyseActive(data, filters) {
   const cacheKey = `${filters.period}|${filters.sector ?? ""}|${filters.canton ?? ""}|${filters.type ?? ""}`;
   if (analysisCache.has(cacheKey)) return analysisCache.get(cacheKey);
 
-  const current = data.activeCube.filter((row) => matchesActive(data, row, filters));
-  const total = current.reduce((sum, row) => sum + row[4], 0);
+  const periodIndex = data.dimensions.periods.indexOf(filters.period);
+  const hasData = periodIndex >= 0 && Boolean(data.coverage.active[periodIndex]);
+  const current = hasData
+    ? data.activeCube.filter((row) => matchesActive(data, row, filters))
+    : [];
+  const total = hasData ? current.reduce((sum, row) => sum + row[4], 0) : null;
 
   const cantonMap = new Map();
   const sectorMap = new Map();
@@ -48,7 +52,6 @@ export function analyseActive(data, filters) {
     trendMap.set(row[0], (trendMap.get(row[0]) ?? 0) + row[4]);
   }
 
-  const periodIndex = data.dimensions.periods.indexOf(filters.period);
   const priorEntry = [...trendMap.entries()]
     .filter(([index]) => index < periodIndex)
     .sort((a, b) => b[0] - a[0])[0];
@@ -59,7 +62,8 @@ export function analyseActive(data, filters) {
     cantons: [...cantonMap.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5),
     sectors: [...sectorMap.entries()].sort((a, b) => b[1] - a[1]).slice(0, 5),
     trendMap,
-    delta: prior ? (total / prior - 1) * 100 : null,
+    hasData,
+    delta: total != null && prior != null && prior !== 0 ? (total / prior - 1) * 100 : null,
   };
   analysisCache.set(cacheKey, result);
   return result;

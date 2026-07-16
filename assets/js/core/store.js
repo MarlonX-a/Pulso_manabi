@@ -4,7 +4,10 @@ export const state = {
   chapter: 0,
   direction: 0,
   transitioning: false,
-  atlasFilters: { period: null, canton: null, sector: null, type: null },
+  appStatus: "loading",
+  atlasMode: "explore",
+  segmentA: { period: null, canton: null, sector: null, type: null },
+  segmentB: { period: null, canton: null, sector: null, type: null },
 };
 
 export function on(event, handler) {

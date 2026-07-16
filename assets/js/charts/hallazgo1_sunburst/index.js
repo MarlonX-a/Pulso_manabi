@@ -1,5 +1,6 @@
 import * as d3 from "d3";
 import { formatInt, formatPercent } from "../../core/format.js";
+import { positionTooltip } from "../../core/overlay.js";
 
 const PALETTE = d3.quantize(d3.interpolateHcl("#2f80ed", "#6c63ff"), 22);
 
@@ -22,6 +23,8 @@ export function createSunburstChart({ el, data }) {
   let rankEl = null;
   let zoomed = null;
   let tooltip = null;
+  let resizeObserver = null;
+  let resizeRaf = null;
 
   function ensureTooltip() {
     if (tooltip) return tooltip;
@@ -34,9 +37,7 @@ export function createSunburstChart({ el, data }) {
   function showTooltip(event, html) {
     const tip = ensureTooltip();
     tip.innerHTML = html;
-    tip.style.display = "block";
-    tip.style.left = `${event.clientX}px`;
-    tip.style.top = `${event.clientY}px`;
+    positionTooltip(tip, event);
   }
   function hideTooltip() { if (tooltip) tooltip.style.display = "none"; }
 
@@ -47,11 +48,11 @@ export function createSunburstChart({ el, data }) {
 
   function renderRank() {
     rankEl.innerHTML = cantonTotals.slice(0, 6).map((c, i) => `
-      <div class="rank-row" data-canton="${c.cantonIdx}">
+      <button type="button" class="rank-row" data-canton="${c.cantonIdx}" aria-label="${c.name}: ${formatInt(c.value)} activos">
         <span>${i + 1}</span>
         <b>${c.name}</b>
         <small>${formatInt(c.value)}</small>
-      </div>`).join("");
+      </button>`).join("");
 
     rankEl.querySelectorAll(".rank-row").forEach((row) => {
       const cantonIdx = Number(row.dataset.canton);
@@ -174,7 +175,7 @@ export function createSunburstChart({ el, data }) {
     centerText.on("click", () => zoomTo(null));
 
     rankEl.innerHTML = parishes.slice().sort((a, b) => b.value - a.value).slice(0, 8).map((p, i) => `
-      <div class="rank-row">
+      <div class="rank-row" aria-label="${p.name}: ${formatInt(p.value)} activos">
         <span>${i + 1}</span>
         <b>${p.name}</b>
         <small>${formatInt(p.value)}</small>
@@ -211,7 +212,15 @@ export function createSunburstChart({ el, data }) {
       resizeFO();
 
       rankEl = document.getElementById("territory-rank");
-      window.addEventListener("resize", () => { resizeFO(); if (zoomed == null) renderOverview(false); else renderZoom(zoomed, false); });
+      resizeObserver = new ResizeObserver(() => {
+        cancelAnimationFrame(resizeRaf);
+        resizeRaf = requestAnimationFrame(() => {
+          resizeFO();
+          if (zoomed == null) renderOverview(false);
+          else renderZoom(zoomed, false);
+        });
+      });
+      resizeObserver.observe(el);
 
       renderOverview(false);
     },
@@ -219,8 +228,13 @@ export function createSunburstChart({ el, data }) {
       if (zoomed == null) renderOverview(true);
       else renderZoom(zoomed, true);
     },
+    leave() { svg?.selectAll("*").interrupt(); },
     update() {},
     resize() {},
-    destroy() { tooltip?.remove(); },
+    destroy() {
+      resizeObserver?.disconnect();
+      cancelAnimationFrame(resizeRaf);
+      tooltip?.remove();
+    },
   };
 }

@@ -14,6 +14,7 @@ export function prefersReducedMotion() {
 }
 
 const panelTimelines = new WeakMap();
+const counterTweens = new WeakMap();
 
 export function buildEnterTimeline(panel) {
   if (panelTimelines.has(panel)) return panelTimelines.get(panel);
@@ -59,6 +60,10 @@ export function buildEnterTimeline(panel) {
 export function resetEnterTimeline(panel) {
   const tl = panelTimelines.get(panel);
   if (tl) tl.progress(0).pause();
+  panel.querySelectorAll("[data-counter]").forEach((el) => {
+    counterTweens.get(el)?.kill();
+    counterTweens.delete(el);
+  });
 }
 
 export function animateCountersIn(panel) {
@@ -70,6 +75,7 @@ export function animateCountersIn(panel) {
 }
 
 export function animateCount(el, targetValue, { format = "int", duration = 1.4 } = {}) {
+  counterTweens.get(el)?.kill();
   const reduced = prefersReducedMotion();
   const obj = { value: 0 };
   const startValue = Number(el.dataset.currentValue ?? 0);
@@ -86,13 +92,15 @@ export function animateCount(el, targetValue, { format = "int", duration = 1.4 }
     return;
   }
 
-  gsap.to(obj, {
+  const tween = gsap.to(obj, {
     value: targetValue,
     duration,
     ease: "power2.out",
     onUpdate: render,
     onComplete: () => {
       el.dataset.currentValue = String(targetValue);
+      counterTweens.delete(el);
     },
   });
+  counterTweens.set(el, tween);
 }

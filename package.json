@@ -11,6 +11,8 @@
     "dev": "vite --host 0.0.0.0",
     "prebuild": "npm run prepare-data",
     "build": "vite build",
+    "test:e2e": "playwright test",
+    "check": "npm run build && npm run test:e2e",
     "preview": "vite preview --host 0.0.0.0",
     "start": "npm run preview"
   },
@@ -23,6 +25,7 @@
     "lucide-static": "^1.24.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.61.1",
     "csv-parse": "^7.0.1",
     "vite": "^6.0.0"
   },
